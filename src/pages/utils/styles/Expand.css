@@ -1,0 +1,44 @@
+.Dragable{
+    display: inline-block;
+    box-sizing: border-box;
+    /*border: .5px dashed #fff;*/
+    position: relative;
+}
+
+/*.Dragable:hover{
+    border: .5px dashed #f00;
+}
+
+.Dragable:hover .editPoint{
+    display: inline-block !important;
+}*/
+
+.editPoint {
+    display: none !important;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border: 0.5px solid #000;
+    position: absolute;
+}
+
+.left-top{
+    left: -2.5px;
+    top: -2.5px;
+    cursor: nw-resize;
+}
+.left-bottom{
+    left: -2.5px;
+    bottom: -2.5px;
+    cursor: sw-resize;
+}
+.right-top{
+    right: -2.5px;
+    top: -2.5px;
+    cursor: ne-resize;
+}
+.right-bottom{
+    right: -2.5px;
+    bottom: -2.5px;
+    cursor: se-resize;
+}
