@@ -1,14 +1,16 @@
 import React from "react";
 import {useMoveHooks} from "./hooks";
-import './styles/Expand.css'
+import './styles/Draggable.css';
 
-const DraggableHOC = (REACT_CHILD_ELE) => {
+type DraggableHOCType = (REACT_CHILD_ELE: any, position?: {x: number; y: number}) => React.FC<any>
+
+const DraggableHOC: DraggableHOCType = (REACT_CHILD_ELE, position = {x: 0, y: 0}) => {
     const Component: React.FC<any> = () => {
-        const {x, y, ref} = useMoveHooks();
+        const {_x, _y, ref} = useMoveHooks({x: position.x, y: position.y});
         return (
-            <span
-                className="Dragable"
-                style={{transform: `translate(${x}px, ${y}px)`}}
+            <div
+                className="Draggable"
+                style={{transform: `translate(${_x}px, ${_y}px)`}}
                 ref={ref}
             >
                 {REACT_CHILD_ELE}
@@ -16,7 +18,7 @@ const DraggableHOC = (REACT_CHILD_ELE) => {
                 <span className="editPoint left-bottom"/>
                 <span className="editPoint right-top"/>
                 <span className="editPoint right-bottom"/>*/}
-            </span>
+            </div>
         )
     }
     return Component

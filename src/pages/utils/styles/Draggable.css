@@ -1,15 +1,14 @@
-.Dragable{
-    display: inline-block;
+.Draggable{
+    width: max-content;
     box-sizing: border-box;
-    /*border: .5px dashed #fff;*/
     position: relative;
 }
 
-/*.Dragable:hover{
+/*.Draggable:hover{
     border: .5px dashed #f00;
 }
 
-.Dragable:hover .editPoint{
+.Draggable:hover .editPoint{
     display: inline-block !important;
 }*/
 

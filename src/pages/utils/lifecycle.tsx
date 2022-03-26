@@ -1,34 +1,68 @@
 import DraggableHOC from "./DraggableHOC";
-import React from "react";
+const UUID = require('uuid-js');
 
 class DragLifecycle {
-  children: {
-    dragId: Symbol;
-    component: React.ReactChild
+  private readonly children: {
+    dragId: string;
+    component: any;
+    position?: {x: number, y: number}
   }[];
+  private subscribePool: any[];
   constructor() {
     this.children = [];
+    this.subscribePool = [];
   };
 
-  definedChildren(child: any) {
-    this.children.push({
-      dragId: child.$$typeof,
-      component: child
+  get generateID() {
+    return UUID.create()
+  }
+
+  subscribe(fn) {
+    this.subscribePool.push(fn)
+  }
+
+  notify(callback) {
+    this.subscribe(callback)
+    return new Promise((resolve) => {
+      resolve("registered successfully")
+    })
+  }
+
+  modifyPosition(dragId, position) {
+
+  }
+
+  definedChildren(child: any, position?:{x: number, y: number}) {
+    return new Promise((resolve, reject) => {
+      try {
+        this.children.push({
+          dragId: this.generateID.hex,
+          component: DraggableHOC(child),
+          position
+        })
+        this.subscribePool.forEach(callback => callback(this.children))
+        resolve(this.children)
+      } catch (error) {
+        reject(error);
+        console.error(error)
+      }
     })
   };
 
   getUnRegisterChildren(children: any[]) {
-    return new Promise(resolve => {
-      if (Array.isArray(children)) {
-        children.forEach(__ele__ => {
-          this.definedChildren(DraggableHOC(__ele__))
-        });
-        resolve(this.children.map(__FILTER_COMPONENT__=>__FILTER_COMPONENT__.component))
-      } else {
-        this.definedChildren(DraggableHOC(children))
-        resolve(this.children.map(__FILTER_COMPONENT__=>__FILTER_COMPONENT__.component))
-      }
-    })
+    if (children) {
+      return new Promise(resolve => {
+        if (Array.isArray(children)) {
+          children.forEach(__ele__ => {
+            this.definedChildren(__ele__)
+          });
+          this.subscribePool.forEach(callback => callback(this.children))
+        } else {
+          this.definedChildren(children)
+          resolve(this.notify)
+        }
+      })
+    }
   };
 }
 

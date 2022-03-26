@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {dragLifecycle} from '../../utils/'
 
-const Dragable: React.FC<any> = props => {
+const Draggable: React.FC<any> = props => {
   const [children, setChildren] = useState<any>([]);
 
   useEffect(() => {
-      dragLifecycle.getUnRegisterChildren(props.children).then(children=>{
-        setChildren(children)
+      dragLifecycle.notify((result) => {
+          setChildren([...result])
+          console.log(result);
       })
+      dragLifecycle.getUnRegisterChildren(props.children)
   }, []);
 
   return (
@@ -15,9 +17,9 @@ const Dragable: React.FC<any> = props => {
       {
           children.map((Element, index) =>
               React.createElement(
-                  Element,
+                  Element.component,
                   {
-                      key: index
+                      key: Element.dragId
                   }
               )
           )
@@ -26,4 +28,4 @@ const Dragable: React.FC<any> = props => {
   );
 }
 
-export default Dragable;
+export default Draggable;
