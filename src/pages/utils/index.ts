@@ -1,5 +1,5 @@
-import {dragLifecycle} from './lifecycle';
+import {DragInstance} from './lifecycle';
 
 export {
-    dragLifecycle
+    DragInstance
 }

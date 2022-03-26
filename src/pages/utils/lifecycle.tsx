@@ -5,9 +5,10 @@ class DragLifecycle {
   private readonly children: {
     dragId: string;
     component: any;
-    position?: {x: number, y: number}
+    position?: {x: number, y: number},
+    data?: any
   }[];
-  private subscribePool: any[];
+  private subscribePool: ((children: any) => void)[];
   constructor() {
     this.children = [];
     this.subscribePool = [];
@@ -28,16 +29,23 @@ class DragLifecycle {
     })
   }
 
-  modifyPosition(dragId, position) {
-
+  modifyPosition(dragId: string, position: {x: number, y: number}) {
+    for (const child of this.children) {
+      if(child.dragId === dragId) {
+        child.position = {...position}
+        break;
+      }
+    }
   }
 
   definedChildren(child: any, position?:{x: number, y: number}) {
     return new Promise((resolve, reject) => {
       try {
+        const dragId = this.generateID.hex;
+
         this.children.push({
-          dragId: this.generateID.hex,
-          component: DraggableHOC(child),
+          dragId,
+          component: DraggableHOC(child, dragId),
           position
         })
         this.subscribePool.forEach(callback => callback(this.children))
@@ -66,5 +74,5 @@ class DragLifecycle {
   };
 }
 
-export const dragLifecycle = new DragLifecycle()
+export const DragInstance = new DragLifecycle()
 

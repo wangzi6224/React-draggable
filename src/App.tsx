@@ -2,13 +2,13 @@ import React, {useEffect} from 'react';
 import './App.css';
 import MoveItem from "./pages/components/MoveItem";
 import Draggable from "./pages/components/Draggable";
-import {dragLifecycle} from "./pages/utils";
+import {DragInstance} from "./pages/utils";
 
 const App = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            dragLifecycle.definedChildren(
+            DragInstance.definedChildren(
                 <div style={{width: "200px", height: '200px', background: "red"}}>222</div>
             )
         },2000)
