@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {DragInstance} from '../../utils/'
+import {DragInstance} from '../utils'
 
 const Draggable: React.FC<any> = props => {
   const [children, setChildren] = useState<any>([]);
