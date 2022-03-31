@@ -1,4 +1,4 @@
-import {DragInstance} from './lifecycle';
+import {DragInstance} from './DraggableEventBus';
 
 export {
     DragInstance

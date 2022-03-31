@@ -1,10 +1,11 @@
-import DraggableHOC from "./DraggableHOC";
+import DraggableCore from "./DraggableCore";
+import React from "react";
 const UUID = require('uuid-js');
 
 class DragLifecycle {
   private readonly children: {
     dragId: string;
-    component: any;
+    component: React.FC<any> | React.Component | React.PureComponent;
     position?: {x: number, y: number},
     data?: any
   }[];
@@ -39,13 +40,16 @@ class DragLifecycle {
   }
 
   definedChildren(child: any, position?:{x: number, y: number}) {
+    if(child.type.toString().slice(0, 5) === "class") {
+      console.error('Not support Class Component')
+    }
     return new Promise((resolve, reject) => {
       try {
         const dragId = this.generateID.hex;
 
         this.children.push({
           dragId,
-          component: DraggableHOC(child, dragId),
+          component: DraggableCore(child, dragId),
           position
         })
         this.subscribePool.forEach(callback => callback(this.children))

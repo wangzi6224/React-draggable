@@ -1,13 +1,14 @@
 import {useEffect, useRef, useState} from "react";
-import {DragInstance} from "./lifecycle";
+import {DragInstance} from "./DraggableEventBus";
+import {addEventHandle, removeEventHandle} from "./eventHandle";
 
 const useMoveHooks = ({x, y}, dragId) => {
     const [_x, set_x] = useState<number>(x);
     const [_y, set_y] = useState<number>(y);
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLElement>(null);
 
     const dragHandle = () => {
-        ref.current?.addEventListener("mousedown", (ELE__MOUSE_EVENT) => {
+        addEventHandle(ref.current,"mousedown", (ELE__MOUSE_EVENT) => {
             let __ModifyX__ = 0;
             let __ModifyY__ = 0;
 
@@ -22,12 +23,12 @@ const useMoveHooks = ({x, y}, dragId) => {
 
             const bodyMouseUp = () => {
                 DragInstance.modifyPosition(dragId, {x: __ModifyX__, y: __ModifyY__});
-                document.body.removeEventListener('mousemove', bodyMouseMove)
-                ref.current?.removeEventListener("mouseup", bodyMouseUp);
+                removeEventHandle(document.body,'mousemove', bodyMouseMove)
+                removeEventHandle(ref.current,"mouseup", bodyMouseUp);
             }
 
-            document.body.addEventListener('mousemove', bodyMouseMove);
-            ref.current?.addEventListener("mouseup", bodyMouseUp)
+            addEventHandle(document.body,'mousemove', bodyMouseMove);
+            addEventHandle(ref.current,"mouseup", bodyMouseUp)
         })
     }
 

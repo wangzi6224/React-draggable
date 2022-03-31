@@ -4,7 +4,7 @@ import './styles/Draggable.css';
 
 type DraggableHOCType = (REACT_CHILD_ELE: any, dragId: string, position?: {x: number; y: number}) => React.FC<any>
 
-const DraggableHOC: DraggableHOCType = (REACT_CHILD_ELE, dragId, position = {x: 0, y: 0}) => {
+const DraggableCore: DraggableHOCType = (REACT_CHILD_ELE, dragId, position = {x: 0, y: 0}) => {
     const Component: React.FC<any> = () => {
         const {_x, _y, ref} = useMoveHooks({x: position.x, y: position.y}, dragId);
 
@@ -41,4 +41,4 @@ const DraggableHOC: DraggableHOCType = (REACT_CHILD_ELE, dragId, position = {x: 
     return Component
 };
 
-export default DraggableHOC;
+export default DraggableCore;
