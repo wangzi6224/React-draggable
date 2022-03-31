@@ -10,14 +10,31 @@ const DraggableHOC: DraggableHOCType = (REACT_CHILD_ELE, dragId, position = {x: 
 
         return (
             <>
-                <div
-                    id={dragId}
-                    className="Draggable"
-                    style={{transform: `translate(${_x}px, ${_y}px)`}}
-                    ref={ref}
-                >
-                    {REACT_CHILD_ELE}
-                </div>
+                {
+                    typeof REACT_CHILD_ELE.type === 'string' &&
+                    React.cloneElement(REACT_CHILD_ELE, {
+                        ...REACT_CHILD_ELE.props,
+                        id:`${dragId}`,
+                        className:"Draggable",
+                        style:{
+                            ...REACT_CHILD_ELE.props.style,
+                            transform: `translate(${_x}px, ${_y}px)`
+                        },
+                        ref
+                    })
+                }
+                {
+                    typeof REACT_CHILD_ELE.type === 'function' && REACT_CHILD_ELE.type.toString().slice(0, 5) !== "class" && React.cloneElement(REACT_CHILD_ELE.type(),{
+                        ...REACT_CHILD_ELE.props,
+                        id:`${dragId}`,
+                        className:"Draggable",
+                        style:{
+                            ...REACT_CHILD_ELE.type().props.style,
+                            transform: `translate(${_x}px, ${_y}px)`
+                        },
+                        ref
+                    })
+                }
             </>
         )
     }

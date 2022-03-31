@@ -7,7 +7,6 @@ const Draggable: React.FC<any> = props => {
   useEffect(() => {
       DragInstance.notify((result) => {
           setChildren([...result])
-          console.log(result);
       });
       DragInstance.getUnRegisterChildren(props.children);
   }, []);
@@ -15,14 +14,22 @@ const Draggable: React.FC<any> = props => {
   return (
     <>
       {
-          children.map(Element =>
+          React.Children.map(children.map(Element =>
               React.createElement(
                   Element.component,
                   {
                       key: Element.dragId
                   }
               )
-          )
+          ), child => child)
+          /*children.map(Element =>
+              React.createElement(
+                  Element.component,
+                  {
+                      key: Element.dragId
+                  }
+              )
+          )*/
       }
     </>
   );
